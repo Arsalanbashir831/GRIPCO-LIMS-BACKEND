@@ -9,5 +9,6 @@ class TestComplianceSerializer(serializers.ModelSerializer):
             "job_id",
             "client_data",
             "job_status",
-            "job_data"
+            "job_data",
+            'isCompiled'
         ]

@@ -18,4 +18,5 @@ urlpatterns = [
     path('api/',include('LabEquipments.urls')),
     path('api/',include('calibrationtesting.urls')),
     path('api/',include('attendancelisting.urls')),
+    path('api/',include('leaveapplication.urls')),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -51,7 +51,7 @@ class LoginView(APIView):
         except User.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
-# CRUD Views
+
 class UserListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]  # Restrict to authenticated users
     queryset = User.objects.all()

@@ -3,7 +3,7 @@ from django.db import models  # Import Django's models
 
 class TestCompliance(models.Model):
     STATUS_TYPES = [
-        ("sales", "Sales"),
+        # ("sales", "Sales"),
         ("supervisor", "Supervisor"),
         ("technician", "Technician"),
     ]
@@ -13,9 +13,10 @@ class TestCompliance(models.Model):
     job_status = models.CharField(
         max_length=20,
         choices=STATUS_TYPES,
-        default="sales",
+        default="supervisor",
     )
     job_data = models.JSONField()
+    isCompiled = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Job ID: {self.job_id}, Status: {self.job_status}"

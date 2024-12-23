@@ -34,6 +34,7 @@ class Attendance(models.Model):
         default=0.00,
         verbose_name=_('Overtime Hours')
     )
+    isApproved = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _('Attendance Record')
