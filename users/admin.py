@@ -5,8 +5,6 @@ from unfold.admin import ModelAdmin
 
 @admin.register(User)
 class UserAdmin(ModelAdmin):
-    fieldsets = DefaultUserAdmin.fieldsets + (
-        (None, {'fields': ('emp_type', 'profile_picture')}),
-    )
+    fields = ['username', 'email', 'emp_type', 'profile_picture', 'is_staff']
     list_display = ['username', 'email', 'emp_type', 'is_staff']
     list_filter = ['emp_type', 'is_staff', 'is_active']

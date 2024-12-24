@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
 ]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 ROOT_URLCONF = "lims.urls"
@@ -143,3 +144,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# MEDIA_URL = '/media/'  # URL to access media files
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory to store media files
