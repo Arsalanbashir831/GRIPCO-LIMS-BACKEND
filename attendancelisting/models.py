@@ -2,8 +2,14 @@ from django.db import models
 from users.models import User
 from django.utils.translation import gettext_lazy as _
 
-
 class Attendance(models.Model):
+    # Define choices for the approval status
+    APPROVAL_STATUS = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('disapproved', 'Disapproved'),
+    ]
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -34,7 +40,12 @@ class Attendance(models.Model):
         default=0.00,
         verbose_name=_('Overtime Hours')
     )
-    isApproved = models.BooleanField(default=False)
+    is_approved = models.CharField(
+        max_length=20,
+        choices=APPROVAL_STATUS,
+        default='pending',
+        verbose_name=_('Approval Status')
+    )
 
     class Meta:
         verbose_name = _('Attendance Record')

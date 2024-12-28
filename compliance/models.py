@@ -6,6 +6,8 @@ class TestCompliance(models.Model):
         # ("sales", "Sales"),
         ("supervisor", "Supervisor"),
         ("technician", "Technician"),
+        ("complete", "Complete"),
+     
     ]
 
     job_id = models.AutoField(primary_key=True)
@@ -17,6 +19,6 @@ class TestCompliance(models.Model):
     )
     job_data = models.JSONField()
     isCompiled = models.BooleanField(default=False)
-
+    checklist_data = models.JSONField(null=True)
     def __str__(self):
         return f"Job ID: {self.job_id}, Status: {self.job_status}"

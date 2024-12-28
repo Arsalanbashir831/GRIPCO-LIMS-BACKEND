@@ -4,4 +4,5 @@ from .models import LeaveApplication
 class LeaveApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = LeaveApplication
-        fields = "__all__"  # Include all fields in the serializer
+        fields = [ 'creation_date', 'start_date', 'end_date', 'reason', 'is_approved']
+     

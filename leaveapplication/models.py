@@ -4,6 +4,13 @@ from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class LeaveApplication(models.Model):
+    # Choices for the leave approval status
+    APPROVAL_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -14,12 +21,23 @@ class LeaveApplication(models.Model):
         auto_now_add=True,
         verbose_name=_('Creation Date')
     )
-    reason = models.TextField()   
-    isApproved = models.BooleanField(default=False)
+    start_date = models.DateField(
+        verbose_name=_('Start Date')
+    )
+    end_date = models.DateField(
+        verbose_name=_('End Date')
+    )
+    reason = models.TextField(verbose_name=_('Reason'))   
+    is_approved = models.CharField(
+        max_length=10,
+        choices=APPROVAL_CHOICES,
+        default='pending',
+        verbose_name=_('Approval Status')
+    )
 
     class Meta:
-        verbose_name = _('Attendance Record')
-        verbose_name_plural = _('Attendance Records')
+        verbose_name = _('Leave Application')
+        verbose_name_plural = _('Leave Applications')
         ordering = ['-creation_date']
         indexes = [
             models.Index(fields=['user']),
@@ -27,4 +45,4 @@ class LeaveApplication(models.Model):
         ]
 
     def __str__(self):
-        return f"Attendance for {self.user.username} on {self.creation_date}"
+        return f"Leave Application for {self.user.username} from {self.start_date} to {self.end_date}"
