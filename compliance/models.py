@@ -6,7 +6,8 @@ class TestCompliance(models.Model):
         # ("sales", "Sales"),
         ("supervisor", "Supervisor"),
         ("technician", "Technician"),
-        ("complete", "Complete"),
+        ("pending approval", "Pending Approval"),
+        ("Approved", "Approved"),
      
     ]
 
