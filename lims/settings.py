@@ -17,6 +17,10 @@ SECRET_KEY = os.getenv("SECRET_KEY", "default_secret_key")
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS = True
 
+# Maximum upload size in bytes (e.g., 100MB)
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1004857600  # 100MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1004857600  # 100MB
+
 
 INSTALLED_APPS = [
      "unfold",  # before django.contrib.admin

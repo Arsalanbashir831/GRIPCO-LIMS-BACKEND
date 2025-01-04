@@ -10,5 +10,5 @@ class TestComplianceSerializer(serializers.ModelSerializer):
             "client_data",
             "job_status",
             "job_data",
-            'isCompiled'
+            'isCompiled','compiled_report'
         ]

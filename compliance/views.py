@@ -5,7 +5,11 @@ from .models import TestCompliance
 from .serializers import TestComplianceSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-
+from django.http import HttpResponse, FileResponse, JsonResponse
+from rest_framework.decorators import api_view, authentication_classes, permission_classes,parser_classes
+from django.shortcuts import get_object_or_404
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.authentication import TokenAuthentication
 
 class TestComplianceViewSet(viewsets.ModelViewSet):
     queryset = TestCompliance.objects.all()
@@ -80,3 +84,53 @@ class TestComplianceViewSet(viewsets.ModelViewSet):
             {"message": "Job deleted successfully."},
             status=status.HTTP_204_NO_CONTENT,
         )
+        
+        
+@api_view(['GET'])
+def get_compiled_report(request, job_id):
+    job = get_object_or_404(TestCompliance, job_id=job_id)
+
+    if job.compiled_report:
+        file_path = job.compiled_report.path  # Full path to the file
+        file_url = job.compiled_report.url    # URL accessible via MEDIA_URL
+
+        # Return the file URL
+        return JsonResponse({"file_url": file_url}, status=200)
+
+    return Response({"error": "No compiled report available for this job."}, status=404)
+
+@api_view(['PUT'])
+@parser_classes([MultiPartParser, FormParser])  # Allow file uploads
+@authentication_classes([JWTAuthentication]) 
+@permission_classes([IsAuthenticated])
+def upload_compiled_report(request, job_id):
+    """
+    API endpoint to upload a compiled report (PDF) for a given job_id.
+    """
+    try:
+        job = get_object_or_404(TestCompliance, job_id=job_id)
+
+        # Ensure a file is provided
+        if 'compiled_report' not in request.FILES:
+            return Response({"error": "No file uploaded."}, status=status.HTTP_400_BAD_REQUEST)
+
+        file = request.FILES['compiled_report']
+
+        # Validate file type (Only allow PDFs)
+        if not file.name.endswith('.pdf'):
+            return Response({"error": "Only PDF files are allowed."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Save the file directly to the model field
+        job.compiled_report = file
+        job.save()
+
+        # Return success response with file URL
+        return Response(
+            {"message": "File uploaded successfully!", "file_url": job.compiled_report.url},
+            status=status.HTTP_200_OK
+        )
+
+    except Exception as e:
+        error_trace = traceback.format_exc()
+        print("Error:", error_trace)  # Log to terminal
+        return Response({"error": str(e), "trace": error_trace}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
